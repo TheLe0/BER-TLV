@@ -8,3 +8,8 @@ add_library(BER-TLV SHARED src/ber-tlv.c)
 
 # Incluir diretórios de cabeçalhos, se necessário
 target_include_directories(BER-TLV PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+add_executable(main src/main.c)
+
+# Vincular a biblioteca ao executável
+target_link_libraries(main BER-TLV)

@@ -1,5 +1,15 @@
 # BER-TLV
 
+Build:
+
+```bash
+mkdir -p ./build
+cd ./build
+cmake ..
+make
+./main
+```
+
 O teste consiste no desenvolvimento de uma biblioteca C para trabalhar com
 objetos BER-TLV. A biblioteca deverá ser capaz de interpretar objetos BER-TLV
 existentes em memória, e permitir que sua estrutura seja facilmente impressa
