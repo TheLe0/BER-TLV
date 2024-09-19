@@ -1,6 +1,14 @@
 #include "ber-tlv.h"
 
+#define OBJ_LEN 13 
+
 int main() {
-    hello_from_library();
+    uint8_t tlvObject[OBJ_LEN] = {
+        0xE1, 0x0B, 0xC1, 0x03, 0x01, 0x02,
+        0x03, 0xC2, 0x00, 0xC3, 0x02, 0xAA,
+        0xBB
+    };
+
+    interpret_tlv(tlvObject, OBJ_LEN);
     return 0;
 }
