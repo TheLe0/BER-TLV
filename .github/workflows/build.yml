@@ -1,4 +1,4 @@
-name: Build & Run Test
+name: Build & Run Test - Clang
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 
 env:
   BUILD_TYPE: Release
+  C_COMPILER: clang
+  CPP_COMPILER: clang++
 
 jobs:
   build:
@@ -18,7 +20,11 @@ jobs:
 
     - name: Configure CMake
       working-directory: ${{github.workspace}}/build
-      run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: > 
+        cmake .. 
+        -DCMAKE_CXX_COMPILER=$${{env.CPP_COMPILER}}
+        -DCMAKE_C_COMPILER=${{env.C_COMPILER}}
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       working-directory: ${{github.workspace}}/build
