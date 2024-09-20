@@ -1,0 +1,30 @@
+name: Build & Run Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      working-directory: ./build
+      run: cmake ..
+
+    - name: Build
+      working-directory: ./build
+      run: make
+
+    - name: Test
+      working-directory: ./build
+      run: ./main
+
