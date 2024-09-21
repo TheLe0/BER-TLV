@@ -64,7 +64,6 @@ permitidas.
 3. Biblioteca deve ser um `.so` (Shared Object) Linux.
 3. Processo de build deve usar CMake ou Makefile.
 
-
 ## Avaliação
 
 1. Capacidade de compreensão de um texto técnico avançado em inglês.

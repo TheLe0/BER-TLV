@@ -70,7 +70,18 @@ size_t print_tlv(uint8_t *tlv, size_t len, int indent)
     print_indent(indent);
     printf("LEN – %zu bytes\n", length);
 
-    if (length > 0)
+    size_t total_length = tag_len + len_len + length;
+
+    // Process constructed objects (skip value print)
+    if (tag & 0x20)
+    {
+        size_t processed_len = tag_len + len_len;
+        while (processed_len < total_length)
+        {
+            processed_len += print_tlv(tlv + processed_len, len - processed_len, indent + 1);
+        }
+    }
+    else if (length > 0) // Print value for primitive tags
     {
         print_indent(indent + 1);
         printf("VAL –");
@@ -81,19 +92,6 @@ size_t print_tlv(uint8_t *tlv, size_t len, int indent)
         }
 
         printf("\n");
-    }
-
-    size_t total_length = tag_len + len_len + length;
-
-    // Process constructed objects recursively
-    if (tag & 0x20)
-    {
-        // Constructed tag
-        size_t processed_len = tag_len + len_len;
-        while (processed_len < total_length)
-        {
-            processed_len += print_tlv(tlv + processed_len, len - processed_len, indent + 1);
-        }
     }
 
     return total_length;
