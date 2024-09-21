@@ -18,6 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create output directory
+        run: mkdir ${{github.workspace}}/build
+
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
         run: >
