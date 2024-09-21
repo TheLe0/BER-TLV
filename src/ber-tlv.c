@@ -51,7 +51,7 @@ size_t parse_length(uint8_t *tlv, size_t len, size_t *length)
     }
 }
 
-size_t print_tlv(uint8_t *tlv, size_t len, int indent)
+size_t print_tlv(uint8_t *tlv, size_t len, int indent, int is_first)
 {
     if (len == 0)
         return 0;
@@ -70,6 +70,12 @@ size_t print_tlv(uint8_t *tlv, size_t len, int indent)
     print_indent(indent);
     printf("LEN – %zu bytes\n", length);
 
+    // If LEN is header or with 0 length, jump line
+    if (is_first || length == 0)
+    {
+        printf("\n");
+    }
+
     size_t total_length = tag_len + len_len + length;
 
     // Process constructed objects (skip value print)
@@ -78,19 +84,23 @@ size_t print_tlv(uint8_t *tlv, size_t len, int indent)
         size_t processed_len = tag_len + len_len;
         while (processed_len < total_length)
         {
-            processed_len += print_tlv(tlv + processed_len, len - processed_len, indent + 1);
+            processed_len += print_tlv(tlv + processed_len, len - processed_len, indent + 1, 0);
         }
     }
-    else if (length > 0) // Print value for primitive tags
+    else if (length > 0)
     {
-        print_indent(indent + 1);
+        // Print value for primitive tags
+
+        print_indent(indent);
         printf("VAL –");
 
         for (size_t i = 0; i < length; i++)
         {
             printf(" 0x%02X", tlv[tag_len + len_len + i]);
         }
+        printf("\n");
 
+        // End of section
         printf("\n");
     }
 
@@ -99,5 +109,6 @@ size_t print_tlv(uint8_t *tlv, size_t len, int indent)
 
 void interpret_tlv(uint8_t *tlvObject, size_t objLen)
 {
-    print_tlv(tlvObject, objLen, 0);
+    // Pass 1 to indicate that the first TLV is being processed
+    print_tlv(tlvObject, objLen, 0, 1);
 }
