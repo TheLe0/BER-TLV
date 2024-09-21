@@ -1,23 +1,10 @@
 # BER-TLV
 
-Build:
+BER is Basic Encoding Rules. TLV stands for Tag + Length + Value. Tag is 1-4 byte long (integer) identifier. Length is 1-4 byte integer representing value (or entire branch) size. Value is binary data, which can also be a nested list of sub-items. BER-TLV is a binary data storage tree, which is widely used in electonic payment industry and in EMV in particular.
 
-```bash
-mkdir -p ./build
-cd ./build
-cmake ..
-make
-./main
-```
+This project is a shared library that you can use in your projects, we receive a TLV object representation and interpret the value.
 
-O teste consiste no desenvolvimento de uma biblioteca C para trabalhar com
-objetos BER-TLV. A biblioteca deverá ser capaz de interpretar objetos BER-TLV
-existentes em memória, e permitir que sua estrutura seja facilmente impressa
-na tela por um programa de usuário.
-
-Exemplo:
-
-Um programa possui em memória o seguinte objeto TLV:
+For example:
 
 ```c
 size_t objLen = 13;
@@ -26,12 +13,13 @@ uint8_t tlvObject[objLen] = {
   0x03, 0xC2, 0x00, 0xC3, 0x02, 0xAA,
   0xBB
 };
+
+interpret_tlv(tlvObject, objLen);
 ```
 
-A biblioteca deverá possibilitar que um programa apresente o seguinte
-texto na tela:
+is going to output this:
 
-```
+```bash
 TAG – 0xE1 (private class, constructed)
 LEN – 11 bytes
 
@@ -47,34 +35,18 @@ LEN – 11 bytes
   VAL – 0xAA 0xBB
 ```
 
-Para este exercício deverá ser implementado:
+## Configuration
 
-1. Biblioteca que acabamos de especificar, em linguagem C.
-2. Programa que utiliza a biblioteca implementada e imprima o conteúdo de
-um TLV na tela, tal como no exemplo acima.
+To run this on your machine you only need to have installed a C compiler (GNU, clang or msbuild).
 
-Para auxiliar no desenvolvimento, você encontrará neste repositório um trecho
-da especificação técnica do formato de codificação de objetos BER-TLV.
+### GNU
 
-## Restrições
+On the root directory:
 
-1. Uso da linguagem C.
-2. Bibliotecas externas não deverão ser usadas. Apenas bibliotecas builtin são
-permitidas.
-3. Biblioteca deve ser um `.so` (Shared Object) Linux.
-3. Processo de build deve usar CMake ou Makefile.
-
-## Avaliação
-
-1. Capacidade de compreensão de um texto técnico avançado em inglês.
-2. Capacidade de compreensão e implementação de uma estrutura abstrata
-complexa. (BER-TLV)
-3. Qualidade da documentação escrita. Esta deve ser objetiva e de fácil
-compreensão, de forma que permita a qualquer desenvolvedor ser capaz de
-utiliza-lá para lidar com objetos BER-TLV.
-4. Lógica implementada. O resultado precisa funcionar e trabalhar com
-objetos BER-TLV.
-5. Conversaremos sobre estrutura de código, lógica e decisões tomadas.
-6. Considere a possibilidade de evolução e trabalho em time
-na manutenção da biblioteca desenvolvida.
-7. Um histórico do git (mesmo que breve) com mensagens de commit claras e concisas
+```bash
+mkdir -p ./build
+cd ./build
+cmake ..
+make
+./main
+```
